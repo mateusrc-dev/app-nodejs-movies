@@ -18,9 +18,9 @@ class UsersController { //vamos usar class porque ela permite que dentro dela po
       throw new AppError("Este e-mail já está em uso!")
     }
 
-    const hashedPassword = await hash(password, 8) //na função de hash passamos dois parâmetros, senha e o salt (fator de complexidade do hash) - tem que colocar await pois a função hash é uma promessa
+    const hashedPassword = await hash(password, 8) //na função de hash passamos dois parâmetros, senha e o salt (fator de complexidade do hash) - tem que colocar await pois a função hash é uma promessa /criptografando a senha
 
-    await database.run("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, hashedPassword]) //o run é pra executar uma inserção no database - como vamos inserir três valores para as respectivas colunas colocamos três interrogações que vão receber as variáveis que estão no vetor (os dados dessas variáveis vão vim do usuário)
+    await database.run("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, hashedPassword]) //o run é pra executar uma inserção no database - como vamos inserir três valores para as respectivas colunas - colocamos três interrogações que vão receber as variáveis que estão no vetor (os dados dessas variáveis vão vim do usuário)
 
     return response.status(201).json()
     
