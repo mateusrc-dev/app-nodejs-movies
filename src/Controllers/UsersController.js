@@ -33,9 +33,10 @@ class UsersController { //vamos usar class porque ela permite que dentro dela po
 
   async update(request, response) { //funcionalidade de atualização do usuário
     const { name, email, password, old_password } = request.body //pegando o corpo da requisição
-    const { id } = request.params; //o id está sendo pego do caminho, pois ele foi colocado como parâmetro
+    //const { id } = request.params; //o id está sendo pego do caminho, pois ele foi colocado como parâmetro
+    const user_id = request.user.id; 
     const database = await sqliteConnection() //fazendo conexão com o banco de dados
-    const user = await database.get("SELECT * FROM users WHERE id = (?)", [id]) //selecionando todos as colunas da linha que tem o respectivo id
+    const user = await database.get("SELECT * FROM users WHERE id = (?)", [user_id]) //selecionando todos as colunas da linha que tem o respectivo id
     if (!user) { //caso o usuário não exista vai entrar nas chaves
       throw new AppError("Usuário não encontrado!")
     } 
@@ -65,7 +66,7 @@ class UsersController { //vamos usar class porque ela permite que dentro dela po
     password = ?, 
     update_at = DATETIME('now')
     WHERE id = ?`, 
-    [user.name, user.email, user.password, id]); //aqui está sendo atualizado o banco de dados, são comandos SQL (UPDATE users SET) pra atualizar o banco de dados - WHERE é pra identificar a linha específica que será modificado o valor das colunas - DATETIME() é uma função do banco de dados que pega o momento atual (data e hora), estamos fazendo isso porque a função Date() do JS tem um padrão de escrever a data e hora diferente da função do banco de dados
+    [user.name, user.email, user.password, user_id]); //aqui está sendo atualizado o banco de dados, são comandos SQL (UPDATE users SET) pra atualizar o banco de dados - WHERE é pra identificar a linha específica que será modificado o valor das colunas - DATETIME() é uma função do banco de dados que pega o momento atual (data e hora), estamos fazendo isso porque a função Date() do JS tem um padrão de escrever a data e hora diferente da função do banco de dados
     return response.json()
   }
 }

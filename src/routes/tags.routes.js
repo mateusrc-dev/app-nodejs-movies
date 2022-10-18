@@ -3,12 +3,12 @@
 const {Router} = require("express");//precisamos importar pra expor aqui o express
 
 const TagsController = require("../Controllers/TagsController")//importando o controller
-
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 const tagsController = new TagsController()//instanciando, ou seja, reservando um espaço na memória para a class
 
 const tagsRoutes = Router() //é preciso trazer o Router (expor o Router) para podermos usar abaixo no post
 
-tagsRoutes.get("/:user_id", tagsController.index) //criando a rota que vai direcionar ao tagsController, arquivo que processa a listagem de todas as tags de um usuário
+tagsRoutes.get("/", ensureAuthenticated, tagsController.index) //criando a rota que vai direcionar ao tagsController, arquivo que processa a listagem de todas as tags de um usuário
 
 module.exports = tagsRoutes;//para expor a rota (tagsRoutes) para o server.js utilizar -> exportando o 'tagsRoutes' para quem desejar poder utilizar
 

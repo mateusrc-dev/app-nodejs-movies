@@ -1,16 +1,19 @@
 //nesse arquivo vai ficar as rotas de usuário
 
 const {Router} = require("express");//precisamos importar pra expor aqui o express
-
+const multer = require("multer")
+const uploadConfig = require("../configs/uploads")
 const UsersController = require("../Controllers/UsersController")//importando o controller
-
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
+const UserAvatarController = require("../Controllers/UserAvatarController")
 const usersController = new UsersController()//instanciando, ou seja, reservando um espaço na memória para a class
+const userAvatarController = new UserAvatarController()
 
 const usersRoutes = Router() //é preciso trazer o Router (expor o Router) para podermos usar abaixo no post
-
+const upload = multer(uploadConfig.MULTER)
 usersRoutes.post("/", usersController.create) //precisamos chamar o controller equivalente toda a vez que essa rota for chamada - podemos colocar nas rotas que desejamos fazer uma interceptação o middleware, no caso o middleware vai pegar a requisição e resposta da rota pra fazer algum tratamento, verificação na função
-usersRoutes.put("/:id", usersController.update) //temos que passar um id como parâmetro, porque isso vai ser esperado, o resto, name e email, vai ser pego do corpo da requisição
-
+usersRoutes.put("/", ensureAuthenticated, usersController.update) //temos que passar um id como parâmetro, porque isso vai ser esperado, o resto, name e email, vai ser pego do corpo da requisição
+usersRoutes.patch("/avatar", ensureAuthenticated, upload.single("avatar"), userAvatarController.update)
 module.exports = usersRoutes;//para expor a rota (userRoutes) para o server.js utilizar -> exportando o 'usersRoutes' para quem desejar poder utilizar
 
 /*app.get("/message/:id/:user", (request, response) => {

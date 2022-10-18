@@ -3,12 +3,13 @@
 const {Router} = require("express");//precisamos importar pra expor aqui o express
 
 const NotesController = require("../Controllers/NotesController")//importando o controller
-
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 const notesController = new NotesController()//instanciando, ou seja, reservando um espaço na memória para a class
 
 const notesRoutes = Router() //é preciso trazer o Router (expor o Router) para podermos usar abaixo no post
 
-notesRoutes.post("/:user_id", notesController.create) //precisamos chamar o controller equivalente toda a vez que essa rota for chamada - podemos colocar nas rotas que desejamos fazer uma interceptação o middleware, no caso o middleware vai pegar a requisição e resposta da rota pra fazer algum tratamento, verificação na função - passando o parâmetro user_id, por enquanto, vamos passar o user_id pela rota
+notesRoutes.use(ensureAuthenticated)
+notesRoutes.post("/", notesController.create) //precisamos chamar o controller equivalente toda a vez que essa rota for chamada - podemos colocar nas rotas que desejamos fazer uma interceptação o middleware, no caso o middleware vai pegar a requisição e resposta da rota pra fazer algum tratamento, verificação na função - passando o parâmetro user_id, por enquanto, vamos passar o user_id pela rota
 notesRoutes.get("/:id", notesController.show) //vai ser 'id' no parâmetro porque é assim que está no notesController.show para ser extraído
 notesRoutes.delete("/:id", notesController.delete)  //rota que tem a funcionalidade de deletar um note
 notesRoutes.get("/", notesController.index) //como vamos passar o user_id por uma query, não precisa colocar aqui na rota o 'id'

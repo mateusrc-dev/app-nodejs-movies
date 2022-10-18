@@ -4,11 +4,12 @@ const AppError = require("../utils/AppError")
 class NotesController {
   async create(request, response) {
     const {title, description, tags, rating} = request.body; //pegando esses respectivos elementos do body/corpo da requisição
-    const {user_id} = request.params; //o id vai ser passando como um parametro na rota/caminho
-    const note = rating > 5 || rating < 1
+    //const {user_id} = request.params; //o id vai ser passando como um parametro na rota/caminho
+    const user_id = request.user.id
+    const note = rating > 5 || rating < 0
 
     if (note) {
-      throw new AppError("Sua nota deve estar entre 1 e 5!")
+      throw new AppError("Sua nota deve estar entre 0 e 5!")
     }
 
     const note_id = await knex("movie_notes").insert({ //passando os objetos que vamos inserir no note_id
@@ -42,7 +43,8 @@ class NotesController {
   }
 
   async index(request, response) { //criando funcionalidade que vai ser responsável por listar todos os notes de um usuário
-    const {title, user_id, tags} = request.query;
+    const {title, tags} = request.query;
+    const user_id = request.user.id
     let notes;
     
     if (tags) { //se existir tags vai ocorrer a consulta esse chaves, se não vai ser realizada a consulta abaixo no else
