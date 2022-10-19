@@ -1,3 +1,4 @@
+require("dotenv/config")
 require("express-async-errors"); //importação da biblioteca que lida com erros
 const migrationsRun = require("./database/sqlite/migrations") //importando o banco de dados
 const AppError = require("./utils/AppError") //vamos precisar desse AppError aqui nesse arquivo
@@ -26,6 +27,6 @@ app.use((error, request, response, next) => { //extraindo os parametros que vamo
   return response.status(500).json({status: "error", message: "Internal server error"}) //se caso o error for no servidor, se no if acima for falso
 })
 
-const PORT = 3333; //saying which port, which address it will wait for requests, requests and return responses
+const PORT = process.env.PORT || 3333; //saying which port, which address it will wait for requests, requests and return responses
 
 app.listen(PORT, () => console.log(`Server is running on Port ${PORT}`)); //listen - keep watching, listening to the door - the function is to say what will be done when the application starts
