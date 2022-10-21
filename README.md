@@ -13,6 +13,7 @@ Parte de backend do projeto Rocketmovies
 - uso do knex (facilita a criação de tabelas com uma linguagem que não depende de um baco de dado específico)
 - uso de exceções (padroniza a mensagem de erro)
 - uso da biblioteca cors para unir o back e o frontend
+- uso da biblioteca jest para criar testes automatizados
 
 ## 🔗 Links
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mateus-carvalho-programador-2b9313249/)
